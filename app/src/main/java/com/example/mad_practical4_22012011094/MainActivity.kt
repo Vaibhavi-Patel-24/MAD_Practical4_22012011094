@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var createAlarmButton: Button
     private lateinit var textAlarmTime: TextView
+    private lateinit var cancelAlarmButton : Button
     private lateinit var cartView: MaterialCardView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +46,10 @@ class MainActivity : AppCompatActivity() {
             showTimerDialog()
         }
 
+        cancelAlarmButton = findViewById<Button>(R.id.cancel_alarm_button)
+        cancelAlarmButton.setOnClickListener{
+            cancelAlarm()
+        }
 
     }
 
@@ -97,9 +102,9 @@ class MainActivity : AppCompatActivity() {
         {
             val intent = Intent(this,AlarmBroadcastReceiver::class.java)
             intent.putExtra("Service1",str)
-            val pendingIntent = PendingIntent.getBroadcast(applicationContext,234324243,intent,PendingIntent.FLAG_UPDATE_CURRENT)
+            val pendingIntent = PendingIntent.getBroadcast(applicationContext,234324243,intent,PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
             val alarmManager =getSystemService(ALARM_SERVICE) as AlarmManager
-            if(str=="Play"){
+            if(str=="Start"){
                 if(alarmManager.canScheduleExactAlarms()) {
                     alarmManager.setExact(
                         AlarmManager.RTC_WAKEUP,
@@ -108,10 +113,18 @@ class MainActivity : AppCompatActivity() {
                     )
 
                 }
+                else{
+                    Toast.makeText(this,"cannot Schedul alaram",Toast.LENGTH_LONG).show()
+                }
             }
             else if(str=="Stop"){
                 alarmManager.cancel(pendingIntent)
                 sendBroadcast(intent)
             }
         }
+    fun cancelAlarm() {
+        setAlarm(0, "Stop")
+        Toast.makeText(this, "Alarm Cancelled", Toast.LENGTH_SHORT).show()
+        cartView.visibility = View.GONE
+    }
 }
