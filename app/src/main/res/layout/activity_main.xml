@@ -167,7 +167,7 @@
                     android:backgroundTint="#52A92F"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="20dp"
-                    app:icon="@drawable/alarm_outlined_alert_clock_icon"
+                    app:icon="@drawable/cancel_alarm_1"
                     app:iconGravity="textStart"
                     app:iconPadding="8dp"
                     />
